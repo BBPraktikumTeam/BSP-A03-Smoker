@@ -40,7 +40,7 @@ public class Table {
         this.matches += matches;
         System.out.println("Agent put: " + papers + " Papers, " +tobacco+ " tobacco and " + matches + " matches" );
         System.out.println("On Table after put: " + this.papers + " Papers, " + this.tobacco + " tobacco and " + this.matches + " matches" );
-        notify();
+        notifyAll();
     }
 
     // public synchronized void placeTobacco(int tobacco) {
@@ -109,7 +109,7 @@ public class Table {
         } else {
             System.out.println("Something was missing");
         }
-        notify();
+//        notifyAll();
         
     }
     

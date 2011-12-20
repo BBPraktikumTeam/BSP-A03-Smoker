@@ -77,6 +77,7 @@ public class Smoker extends Thread {
                     System.out.println(name + " cant't smoke");
                     e.printStackTrace();
                 }
+              
             }
         }
 
@@ -87,10 +88,15 @@ public class Smoker extends Thread {
      * 
      */
     private void smokeCigarette() throws InterruptedException {
-        
+        try {
             Thread.sleep(SMOKING_DURATION);
- 
-
+        } catch (InterruptedException e) {
+            this.interrupt();
+        }
+       
+synchronized(table){
+    table.notifyAll();
+}
     }
 
     /**
@@ -99,8 +105,11 @@ public class Smoker extends Thread {
      */
     private void rollCigarette() throws InterruptedException {
             decrementIngredients();
-     
+     try{
             Thread.sleep(ROLL_DURATION);
+    } catch (InterruptedException e) {
+        this.interrupt();
+    }
     }
 
     /**
