@@ -16,8 +16,8 @@ public class Smoker extends Thread {
     Table table;
 
     private static final int REMOVE_AMOUNT = 1;
-    private static final int SMOKING_DURATION = 1000;
-    private static final int ROLL_DURATION = 5000;
+    private static final int SMOKING_DURATION = 500;
+    private static final int ROLL_DURATION = 1000;
     private static final int INGREDIENTS_USED_FOR_CIGARETTE = 1;
 
     private Smoker(Table table, String name, int paper, int tobacco, int matches) {
@@ -33,27 +33,10 @@ public class Smoker extends Thread {
         return new Smoker(table,name, paper, tobacco, matches);
     }
 
-//    public void getTobacco() {
-//        table.removeTobacco(REMOVE_AMOUNT);
-//        System.out.println(name +" got Tobacco");
-//        tobacco += REMOVE_AMOUNT;
-//    }
-//
-//    public void getPapers() {
-//        table.removePapers(REMOVE_AMOUNT);
-//        System.out.println(name +" got Papers");
-//        papers += REMOVE_AMOUNT;
-//    }
-//
-//    public void getMatches() {
-//        table.removeMatches(REMOVE_AMOUNT);
-//        System.out.println(name +" got Matches");
-//        matches += REMOVE_AMOUNT;
-//    }
 
     public void run() {
 
-        while (true) {
+        while(!this.isInterrupted()){
             if (!hasAllIngredients()) {
                 try {
                     
@@ -94,9 +77,10 @@ public class Smoker extends Thread {
             this.interrupt();
         }
        
-synchronized(table){
-    table.notifyAll();
-}
+        synchronized(table){
+            System.out.println(name + " finished smoking");
+            table.notifyAll();
+        }
     }
 
     /**
@@ -156,7 +140,13 @@ synchronized(table){
                e.printStackTrace();
            }
        } else {
-//           System.out.println("Smoker " + name + " didn't get anything");
+               synchronized(table) {
+                   try {
+                    table.wait();
+                } catch (InterruptedException e) {
+                    this.interrupt();
+                }
+               }
        }
 
     }

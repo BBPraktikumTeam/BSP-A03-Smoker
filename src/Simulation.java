@@ -8,8 +8,8 @@
  */
 public class Simulation {
 
-    private static final int INITIAL_AMOUNT = 100;
-    private static final int DURATION = 1000;
+    private static final int INITIAL_AMOUNT = Integer.MAX_VALUE;
+    private static final int DURATION = 10000;
     /**
      * @param args
      */
@@ -21,11 +21,11 @@ public class Simulation {
         Smoker smoker3 = Smoker.valueOf(table, "Track", 0, 0, INITIAL_AMOUNT);
         
       try {  
-
+          smoker1.start();
+          smoker2.start();
+          smoker3.start();
         agent.start();
-        smoker1.start();
-        smoker2.start();
-        smoker3.start();
+
        } catch(Exception e) {
            e.printStackTrace();
        }
@@ -35,10 +35,11 @@ public class Simulation {
         // TODO Auto-generated catch block
         e.printStackTrace();
     }
-//       agent.interrupt();
-//       smoker1.interrupt();
-//       smoker2.interrupt();
-//       smoker3.interrupt();
+       agent.interrupt();
+       smoker1.interrupt();
+       smoker2.interrupt();
+       smoker3.interrupt();
+       System.out.println("All smokers dead from cancer");
        
     }
 
